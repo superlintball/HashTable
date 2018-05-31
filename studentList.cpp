@@ -9,21 +9,48 @@
 #include <vector>
 #include <iomanip>
 #include <fstream>
+#include "Generator.h"
 using namespace std;
 
 //struct to define student
 struct Student
 {
-	char firstName[80];
-	char lastName[80];
+	char* fName;
+	char* lName;
 	int id;
-	float gpa;
+	double gpa;
+	Student(char* firstName, char* lastName, int stID, double stGPA)
+	{
+		fName = firstName;
+		lName = lastName;
+		id = stID;
+		gpa = stGPA;
+	}
+};
+
+struct Node
+{
+	Student* student;
+	Node* next = NULL;
+	Node(Student* st)
+	{
+		student = st;
+	}
 };
 
 //add student function
-void addStudent(vector<Student*> &stList)
+void addStudent(Node* hashTable[], int &indices, Generator* gen, int &size)
 {
-	//add new student to end of vector
+	cout << "How many students would you like to add?\n";
+	int num = 0;
+	cin >> num;
+	
+	for(int i = 0; i < num; i++)
+	{
+		Student* hi = new Student(gen->firstName(), gen->lastName(), gen->id(), gen->gpa());
+	}
+	
+	/*//add new student to end of vector
 	stList.push_back(new Student());
 
 	//prompt user for all information on student
@@ -34,9 +61,9 @@ void addStudent(vector<Student*> &stList)
 	cout << "Enter student's ID Number." << endl;
 	cin >> stList.back()->id;
 	cout << "Enter student's GPA." << endl;
-	cin >> stList.back()->gpa;
+	cin >> stList.back()->gpa;*/
 }
-
+/*
 //go through all students and print their information
 void printStudents(vector<Student*> stList)
 {
@@ -76,58 +103,19 @@ bool deleteStudent(vector<Student*> &stList)
 	}
 	//return false if no matching student was found
 	return false;
-}
+}*/
 
 //main code block
 int main()
-{
-	char* fNames[25];
-	ifstream stream("firstNames.txt");
-	if(stream.is_open())
-	{
-		char* list = new char[256];
-		//extract the text from the file
-		stream.getline(list, 256);
-		stream.close();
-		
-		int fIndex = 0;
-		//extract the numbers from the text
-		for(int i = 0; i < strlen(list); i++)
-		{
-			//isolate the number into a separate char pointer
-			int start = i;
-			char* fName = new char[16];
-			do fName[i-start] = list[i];
-			while(list[++i] != ',' && i < strlen(list));
-			fName[i-start] = '\0';
-			
-			//cout << "accessing fName\n";
-			cout << fName << endl;
-			
-			
-			//cout << "accessing fNames[fIndex]\n";
-			strcpy(fNames[fIndex], fName);
-			
-			//cout << "accessing fIndex\n";
-			cout << fIndex++;
-			
-			cout << "starting new loop: " << i << "\n";
-		}
-	}
-	else
-	{
-		cout << "File not found\n";
-	}
-	
-	cout << "da";
-	for(int i = 0; i < 25; i++)
-	{
-		cout << fNames[i] << endl;
-	}
+{	
+	srand(time(NULL));
 	
 	//define variables to be used
-	vector<Student*> studentList;
-	studentList.reserve(10);
+	vector<Student*> studentList();
+	Node* hashTable[128];
+	int indices = 0;
+	Generator* gen = new Generator();
+	int size = 128;
 	char input[8];
 
 	//general loop to stay true until the user signals to quit
@@ -142,28 +130,28 @@ int main()
 		//if the user wants to add a student, add that student and print that they have been added
 		if(strcmp(input, "ADD") == 0 || strcmp(input, "add") == 0)
 		{
-			addStudent(studentList);
+			addStudent(hashTable, indices, gen, size);
 			cout << "Student Added." << endl << endl;
 		}
 		
 		//if the user wants to prints students, print them all and notify when complete
 		else if(strcmp(input, "PRINT") == 0 || strcmp(input, "print") == 0)
 		{
-			printStudents(studentList);
-			cout << "All Students Printed." << endl << endl;
+			//printStudents(studentList);
+			//cout << "All Students Printed." << endl << endl;
 		} 
 		
 		//if the user wants to delete a student, attempt to delete that student
 		else if(strcmp(input, "DELETE") == 0 || strcmp(input, "delete") == 0)
 		{
-			//depending on what deleteStudent returns, notify the user of what happened
+			/*//depending on what deleteStudent returns, notify the user of what happened
 			if(deleteStudent(studentList))
 			{
 				cout << "Selected Student Deleted." << endl << endl;
 			} else
 			{
 				cout << "Given Student was not Found." << endl << endl;
-			}
+			}*/
 		}
 		
 		//if the user wants to quit, set the boolean to false, closing the while loop
