@@ -54,5 +54,5 @@ int Generator::id()
 //returns a random number between 0.1 and 4.0
 double Generator::gpa()
 {
-	return (static_cast<double>(rand() % 40 + 1)/10);
+	return (static_cast<double>(rand() % 400 + 1)/100);
 }
