@@ -1,6 +1,7 @@
 #include "Generator.h"
 
 #include <fstream>
+#include <cstdlib>
 
 using namespace std;
 

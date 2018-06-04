@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include <cstring>
-#include <vector>
 #include <iomanip>
 #include <fstream>
 #include "Generator.h"
@@ -164,21 +163,36 @@ Node** addStudent(Node* hashTable[], int &indices, Generator* gen, int &size)
 //go through all students and print their information
 void printStudents(Node* hashTable[], int size)
 {
+	int count = 0;
 	cout << endl;
 	for(int i = 0; i < size; i++)
 	{
+		
 		if(hashTable[i])
 		{
 			Node* current = hashTable[i];
+			/*cout << &current << endl;
+			cout << &hashTable[i] << endl;
+			cout << i << endl;
+			cout << &hashTable[i]->student << endl;
+			cout << &hashTable[i]->student->fName << endl;
+			cout << &current->student->fName << endl;
+			cout << &current->student->fName << endl;*/
 			while(current)
 			{
 				Student* s = current->student;
-				cout << s->fName << endl;
-				cout << s->lName << endl;
-				cout << "ID: " << s->id << endl;
-				cout << "GPA: " << setprecision(2) << fixed << s->gpa << endl << endl;
-				current = current->next;
+				if(s->fName)
+				{
+					cout << s->fName << endl;
+					cout << s->lName << endl;
+					cout << "ID: " << s->id << endl;
+					cout << "GPA: " << setprecision(2) << fixed << s->gpa << endl << ++count << endl << endl;
+					current = current->next;
+				}
+				/*cout << "count: " << count << endl;
+				cout << "index: " << i << endl << endl;*/
 			}
+			delete current;
 		}
 	}
 }
@@ -232,11 +246,8 @@ bool deleteStudent(Node* hashTable[], int size)
 
 //main code block
 int main()
-{	
-	//define variables to be used
-	vector<Student*> studentList();
-	
-	Node* hashTable[128];
+{
+	Node** hashTable;
 	for(int i = 0; i < 128; i++)
 		hashTable[i] = NULL;
 	
@@ -264,6 +275,7 @@ int main()
 		//if the user wants to prints students, print them all and notify when complete
 		else if(strcmp(input, "PRINT") == 0 || strcmp(input, "print") == 0)
 		{
+			cout << indices << endl;
 			printStudents(hashTable, size);
 			cout << "All Students Printed." << endl << endl;
 		} 
